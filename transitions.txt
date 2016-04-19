@@ -1,0 +1,71 @@
+
+  TRANSITIONS API 21
+
+
+ - Criar folder values-v21 e colocar no style
+	<item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+
+Activity A E NA B
+==========================================================================================
+	 - antes do oncreate
+==========================================================================================
+
+	 //Transition
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            //FORMA 1 entre telas
+            /*
+            Explode trans1 = new Explode();
+            trans1.setDuration(1000);
+
+            AutoTransition trans1 =  new AutoTransition();
+            trans1.setDuration(1000);
+
+            Fade trans2 = new Fade();
+            trans2.setDuration(1000);
+
+            getWindow().setExitTransition( trans1 ) ;
+            getWindow().setReenterTransition( trans2 );
+            */
+
+            //FORMA 2
+//            TransitionInflater inflater = TransitionInflater.from(this);
+//            Transition transition = inflater.inflateTransition( R.transition.transitions );
+//            getWindow().setSharedElementExitTransition( transition );
+
+            getWindow().setSharedElementExitTransition( new ChangeBounds());
+        }
+
+
+==========================================================================================
+	- no onclick
+==========================================================================================
+
+ //Transitions
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+		-Estes são os itens do recycle_item.xml
+
+            View imagemViewAnimada = v.findViewById(R.id.img);
+            View page = v.findViewById(R.id.txtPages);
+
+            ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                            Pair.create(imagemViewAnimada,"elemento1"),
+                            Pair.create(page,"elemento2"));
+
+
+            MainActivity.this.startActivity(it,options.toBundle());
+        }
+        else {
+            startActivity(it);
+        }
+
+
+==========================================================================================
+	- no recycle_item.xml
+==========================================================================================		
+
+	colocar nas respectivas recuperadas em cima os nomes ex: elemento1,elemento2	

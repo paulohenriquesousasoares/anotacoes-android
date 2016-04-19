@@ -1,0 +1,217 @@
+IMPLEMENTANDO RECYCLEVIEW
+
+http://javatechig.com/?json=get_recent_posts&count=45
+
+compile 'com.android.support:cardview-v7:+'
+compile 'com.android.support:design:23.2.1'
+
+
+=============================================================================================
+				PASSOS
+=============================================================================================
+
+1 - create objeto
+
+====================================================================================
+2 - create layout com o recycle
+====================================================================================
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".RecyclerViewActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>
+
+====================================================================================
+3 - create layout com recycle_item
+====================================================================================
+
+Relative ou ndroid.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="2dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</android.support.v7.widget.CardView>
+
+====================================================================================
+4 - create RecycleAdapter
+====================================================================================
+
+public class MyRecicleViewAdapter extends
+        RecyclerView.Adapter<MyRecicleViewAdapter.DataObjectHolder> {
+
+    private ArrayList<DataObject> mDataset;
+    private static MyClickListener myClickListener;
+
+
+    //CONSTRUTOR
+    public MyRecicleViewAdapter(ArrayList<DataObject> myDataset) {
+        mDataset = myDataset;
+    }
+
+    public void setOnItemClickListener(MyClickListener listener) {
+        this.myClickListener = listener;
+    }
+
+    @Override
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item, parent, false);
+
+        DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
+        return dataObjectHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(DataObjectHolder holder, int position) {
+
+        holder.label.setText(mDataset.get(position).getmText1());
+        holder.datetime.setText(mDataset.get(position).getmText2());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView label;
+        TextView datetime;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+
+            label = (TextView) itemView.findViewById(R.id.textView);
+            datetime = (TextView) itemView.findViewById(R.id.textView2);
+            Log.i("TAG", "public DataObjectHolder = Listener adicionado");
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myClickListener.onItemClick(getPosition(),v);
+        }
+    }
+    
+    public interface MyClickListener {
+        public void onItemClick(int position, View v);
+    }
+
+    public void deleteItem(int index) {
+        mDataset.remove(index);
+        notifyItemRemoved(index);
+    }
+
+    public DataObject detalhes(int index) {
+        DataObject obj =  mDataset.get(index);
+        return  obj;
+    }
+
+
+}
+
+====================================================================================
+5 - Realizar chamanda 
+====================================================================================
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private static String LOG_TAG = "ACTIVITY";
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new MyRecicleViewAdapter(getDataSet());
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ((MyRecicleViewAdapter) mAdapter).setOnItemClickListener(new
+                 MyRecicleViewAdapter.MyClickListener() {
+                     @Override
+                     public void onItemClick(int position, View v) {
+                         Log.i(LOG_TAG, " Clicado no item " + v);
+
+                         DataObject obj = ((MyRecicleViewAdapter) mAdapter).detalhes(position);
+                         Log.i(LOG_TAG, "item selecionado " + obj.getmText1());
+
+                     }
+                 });
+
+
+    }
+
+    private ArrayList<DataObject> getDataSet() {
+
+        ArrayList results = new ArrayList<DataObject>();
+        for (int index = 0; index < 20; index++) {
+            DataObject obj = new DataObject("Some Primary Text " + index, "Secondary " + index);
+            results.add(index, obj);
+        }
+        return results;
+    }
+
+
+
+
+=========================================================================
+ANOTACOES IMPORTANTES
+=========================================================================
+
+ //GRID
+        mGridLayoutManager = new GridLayoutManager(MainActivity.this, 3);
+        mRecycleView.setLayoutManager(mGridLayoutManager);
+
+
+        //CARD E NORMAL
+        //LinearLayoutManager llm = new LinearLayoutManager(MainActivity.this);
+        //mRecycleView.setLayoutManager(llm);
+
+
+
+

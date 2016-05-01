@@ -1,0 +1,48 @@
+
+0.75 - ldpi  (small)   //mdpi dimens *0.75
+1.0  - mdpi  (normal)  //First create these dimensions
+1.5  - hdpi  (large)   //mdpi dimens *1.5
+2.0  - xhdpi (xLarge)  //mdpi dimens *2.0
+================================================================================================================
+
+res/layout-small
+res/layout-normal
+res/layout-large
+res/layout-xlarge
+
+
+res/layout/my_layout.xml             // layout for normal screen size ("default")
+res/layout-small/my_layout.xml       // layout for small screen size
+res/layout-large/my_layout.xml       // layout for large screen size
+res/layout-xlarge/my_layout.xml      // layout for extra large screen size
+res/layout-xlarge-land/my_layout.xml // layout for extra large in landscape orientation
+
+================================================================================================================
+dimens.xml : 
+
+<!-- Small Dimensions = "Medium Dimensions * 0.75" For Example: 210*.75 = 157.5-->
+<dimen name = "button1_width_small">157.5dip</dimen>
+
+<!-- Medium Dimensions -->
+<dimen name = "button1_width_medium">210dip</dimen>
+
+<!-- Large Dimensions = "Medium Dimensions * 1.5" For Example: 210*1.5 = 315 -->
+<dimen name = "button1_width_large">315dip</dimen>
+
+<!-- XLarge Dimensions = "Medium Dimensions * 2" For Example: 210*1.5 = 420 -->
+<dimen name = "button1_width_xLarge">420dip</dimen>
+
+And use them in your Layouts (Normal/Medium) like this: 
+
+<Button
+    android:id="@+id/button1"
+    android:layout_width="@dimen/button1_width_medium"
+    android:layout_height="210dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:background="@drawable/animation0" />
+    
+================================================================================================================
+    
+    
+    

@@ -3,6 +3,11 @@
 1.0  - mdpi  (normal)  //First create these dimensions
 1.5  - hdpi  (large)   //mdpi dimens *1.5
 2.0  - xhdpi (xLarge)  //mdpi dimens *2.0
+
+mdpi - 24x24
+hdpi - 36x36
+xhdpi - 48
+
 ================================================================================================================
 
 res/layout-small

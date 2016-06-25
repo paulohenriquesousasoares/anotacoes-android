@@ -49,5 +49,34 @@ And use them in your Layouts (Normal/Medium) like this:
     
 ================================================================================================================
     
-    
+     private int calculateSizeImagem(double density) {
+
+        //ira passar a densidade da tela no caso do moto g sera 2.0 dpi
+
+        int size = 0;
+
+        if (density >= 4.0) {
+            size = (int)imgSize * 4;
+            Log.i("LOG ", "xxxhdpi = " + size );
+
+        }
+        else if (density >= 3.0 && density < 4.0) {
+            size = (int)imgSize * 3;
+            Log.i("LOG ", "xxhdpi = " + size );
+
+        }
+        else if (density >= 2.0) {
+            size = (int)imgSize * 2;
+            Log.i("LOG ", "xhdpi = " + size );
+        }
+        else if (density >= 1.5 && density < 2.0) {
+            size = (int) (imgSize * 1.5);
+            Log.i("LOG ", "ldpi = " + size );
+        }
+        else if (density >= 1.0 && density < 1.5) {
+            size = (int) imgSize * 1;
+            Log.i("LOG ", "mdpi = " + size );
+        }
+        return size;
+    }
     
